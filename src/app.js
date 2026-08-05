@@ -54,6 +54,7 @@ function render() {
   document.querySelector("#mean").textContent = metrics.mean.toFixed(3);
   document.querySelector("#peak").textContent = metrics.peak.toFixed(3);
   document.querySelector("#tick-label").textContent = `TICK ${String(state.tick).padStart(3, "0")}`;
+  document.querySelector("#live-status").textContent = `Tick ${state.tick}. Mean activity ${metrics.mean.toFixed(3)}. Peak activity ${metrics.peak.toFixed(3)}.`;
 }
 
 function advance() {
