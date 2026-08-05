@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="A deterministic computational neuroscience field study." />
+    <title>Neural Field Study</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="Neural Field Study home"><span class="brand-mark">NF</span><span>Neural Field Study</span></a>
+      <span class="status"><i></i> deterministic proof / 001</span>
+    </header>
+    <main id="top">
+      <section class="intro shell">
+        <div class="intro-copy">
+          <p class="eyebrow">Computational neuroscience / synthetic system</p>
+          <h1>How does activity <em>travel?</em></h1>
+          <p class="lede">A small, inspectable field study of excitation, inhibition, topology, and propagation.</p>
+          <p class="supporting">The first proof keeps the rules explicit and the trajectory reproducible. No clinical claims, no black box, no borrowed certainty.</p>
+        </div>
+        <aside class="note-panel">
+          <span class="note-label">Study note</span>
+          <p>Local excitation opens a path. Longer-range inhibition decides what survives.</p>
+          <span class="note-foot">AMARI / DOG KERNEL / SEEDED REPLAY</span>
+        </aside>
+      </section>
+
+      <section class="lab shell" aria-label="Neural field simulation">
+        <div class="lab-header"><div><span class="eyebrow">Live field</span><h2>Propagation study</h2></div><span class="lab-state" id="run-state">PAUSED</span></div>
+        <div class="lab-grid">
+          <div class="canvas-frame"><canvas id="field" width="720" height="480" aria-label="Neural activity field visualization"></canvas><div class="canvas-overlay"><span>PERIODIC LATTICE</span><span id="tick-label">TICK 000</span></div></div>
+          <aside class="controls">
+            <div class="metric"><span>Active mass</span><strong id="mass">0.000</strong></div>
+            <div class="metric"><span>Mean activity</span><strong id="mean">0.000</strong></div>
+            <div class="metric"><span>Peak activity</span><strong id="peak">0.000</strong></div>
+            <div class="control-actions"><button id="toggle" type="button" aria-label="Play or pause simulation">▶</button><button id="step" type="button" aria-label="Advance one simulation step">＋</button><button id="reset" type="button" aria-label="Reset simulation">↺</button></div>
+            <button class="intervention" id="intervention" type="button"><span class="indicator"></span> Inhibitory intervention <b>OFF</b></button>
+            <p class="control-note">Click the field to place the intervention. The same seed always returns the same trajectory.</p>
+          </aside>
+        </div>
+      </section>
+
+      <section class="evidence shell">
+        <div><p class="eyebrow">What is proven</p><h2>Small rules.<br /><em>Visible consequences.</em></h2></div>
+        <div class="evidence-list"><p><b>01</b> A fixed lattice and explicit difference-of-Gaussians interaction kernel.</p><p><b>02</b> Seeded replay with bounded, finite state after every update.</p><p><b>03</b> A localized inhibitory intervention that changes the trajectory.</p></div>
+      </section>
+    </main>
+    <footer class="footer shell"><span>Neural Field Study / 001</span><a href="https://github.com/joshuadefreitas" target="_blank" rel="noreferrer">Joshua de Freitas ↗</a></footer>
+    <script type="module" src="src/app.js"></script>
+  </body>
+</html>
