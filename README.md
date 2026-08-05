@@ -8,6 +8,8 @@ An executable computational-neuroscience study of how local excitation, inhibiti
 
 **Scope:** synthetic systems research and visual exploration, not clinical or biological prediction
 
+**Live study:** [joshuadefreitas.github.io/neural-field-study](https://joshuadefreitas.github.io/neural-field-study/)
+
 ## Run it
 
 No package installation is required for the browser study:
