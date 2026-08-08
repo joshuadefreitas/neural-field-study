@@ -1,21 +1,21 @@
+import { resolveBoundary } from "./boundary.js";
+
 const DEFAULTS = {
   width: 72,
   height: 48,
   seed: 17,
-  dt: 0.14,
-  decay: 0.72,
-  gain: 1.42,
-  radius: 6,
+  dt: 0.15,
+  boundary: "torus",
+  radius: 8,
   excitationSigma: 1.7,
   inhibitionSigma: 4.3,
-  inhibitionRatio: 0.78,
+  excitationStrength: 1.2,
+  inhibitionStrength: 1,
+  responseSlope: 10,
+  threshold: 0.1,
   pulseRadius: 4,
   pulseAmplitude: 0.92,
 };
-
-function wrap(value, size) {
-  return (value + size) % size;
-}
 
 function createRng(seed) {
   let value = seed >>> 0;
@@ -29,24 +29,37 @@ function gaussian(distanceSquared, sigma) {
   return Math.exp(-distanceSquared / (2 * sigma * sigma));
 }
 
+function logistic(value) {
+  return 1 / (1 + Math.exp(-value));
+}
+
 export function createKernel(config = {}) {
   const options = { ...DEFAULTS, ...config };
-  const entries = [];
-  let sum = 0;
+  const rawEntries = [];
+  let excitationTotal = 0;
+  let inhibitionTotal = 0;
 
   for (let dy = -options.radius; dy <= options.radius; dy += 1) {
     for (let dx = -options.radius; dx <= options.radius; dx += 1) {
-      if (dx === 0 && dy === 0) continue;
       const distanceSquared = dx * dx + dy * dy;
       const excitation = gaussian(distanceSquared, options.excitationSigma);
-      const inhibition = options.inhibitionRatio * gaussian(distanceSquared, options.inhibitionSigma);
-      const weight = excitation - inhibition;
-      entries.push({ dx, dy, weight });
-      sum += weight;
+      const inhibition = gaussian(distanceSquared, options.inhibitionSigma);
+      rawEntries.push({ dx, dy, excitation, inhibition });
+      excitationTotal += excitation;
+      inhibitionTotal += inhibition;
     }
   }
 
-  return { entries, centerWeight: -sum };
+  // Normalizing each lobe makes its configured strength directly interpretable.
+  // The centre is a regular sample of the kernel, not a compensating self-feedback term.
+  const entries = rawEntries.map((entry) => ({
+    dx: entry.dx,
+    dy: entry.dy,
+    weight: (options.excitationStrength * entry.excitation) / excitationTotal
+      - (options.inhibitionStrength * entry.inhibition) / inhibitionTotal,
+  }));
+
+  return { entries };
 }
 
 export function createField(config = {}) {
@@ -85,16 +98,15 @@ export function seedPulse(state, centerX, centerY, radius, amplitude) {
 export function stepField(state, config = {}, intervention = null) {
   const options = { ...DEFAULTS, ...config };
   const kernel = options.kernel ?? createKernel(options);
+  const boundary = resolveBoundary(options.boundary);
   const next = new Float32Array(state.values.length);
 
   for (let y = 0; y < state.height; y += 1) {
     for (let x = 0; x < state.width; x += 1) {
       const index = y * state.width + x;
-      let interaction = state.values[index] * kernel.centerWeight;
+      let interaction = 0;
       for (const entry of kernel.entries) {
-        const sampleX = wrap(x + entry.dx, state.width);
-        const sampleY = wrap(y + entry.dy, state.height);
-        interaction += state.values[sampleY * state.width + sampleX] * entry.weight;
+        interaction += boundary.sample(state.values, state.width, state.height, x + entry.dx, y + entry.dy) * entry.weight;
       }
 
       let external = 0;
@@ -105,8 +117,8 @@ export function stepField(state, config = {}, intervention = null) {
         external = intervention.strength * gaussian(distanceSquared, intervention.radius);
       }
 
-      const value = state.values[index] + options.dt * (-options.decay * state.values[index] + options.gain * Math.tanh(interaction - external));
-      next[index] = Math.max(0, Math.min(1, value));
+      const target = logistic(options.responseSlope * (interaction - external - options.threshold));
+      next[index] = (1 - options.dt) * state.values[index] + options.dt * target;
     }
   }
 

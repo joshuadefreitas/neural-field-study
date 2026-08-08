@@ -5,6 +5,9 @@
   "description": "A deterministic computational neuroscience field study.",
   "type": "module",
   "scripts": {
-    "test": "node --test"
+    "test": "node --test",
+    "audit": "node scripts/numerical-audit.mjs",
+    "sweep": "node scripts/regime-sweep.mjs",
+    "boundary-audit": "node scripts/boundary-audit.mjs"
   }
 }

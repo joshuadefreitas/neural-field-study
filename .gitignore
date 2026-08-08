@@ -4,3 +4,4 @@ coverage/
 dist/
 .ipynb_checkpoints/
 __pycache__/
+.Rhistory

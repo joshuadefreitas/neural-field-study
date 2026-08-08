@@ -1,6 +1,15 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { createField, isValidState, stepField, summarize } from "../src/neural-field.js";
+import { createField, createKernel, isValidState, stepField, summarize } from "../src/neural-field.js";
+
+test("the normalized difference-of-Gaussians kernel has the configured net balance without a compensating self-term", () => {
+  const kernel = createKernel();
+  const totalWeight = kernel.entries.reduce((sum, entry) => sum + entry.weight, 0);
+  const centreWeight = kernel.entries.find((entry) => entry.dx === 0 && entry.dy === 0).weight;
+
+  assert.ok(Math.abs(totalWeight - 0.2) < 1e-6);
+  assert.ok(Math.abs(centreWeight) < 0.06);
+});
 
 function run(seed, intervention = null) {
   let state = createField({ seed });

@@ -6,14 +6,17 @@ How do local excitation, inhibition, and topology shape the propagation, stabili
 
 ## Model
 
-The current proof uses a discretized Amari-style field. Each cell stores a scalar activity value `u` in `[0, 1]`. A difference-of-Gaussians interaction kernel creates short-range excitation and longer-range inhibition:
+The current proof uses a discrete rate field inspired by the neural-field literature. Each cell stores a scalar activity value `u` in `[0, 1]`. A difference-of-Gaussians interaction kernel creates short-range excitation and longer-range inhibition. Each Gaussian lobe is normalized on the finite lattice before its strength is applied:
 
 ```text
 input(x) = sum(kernel(dx, dy) * u(x + dx, y + dy))
-next(x)  = clamp(u(x) + dt * (-decay * u(x) + gain * tanh(input(x) + seed(x) - intervention(x))))
+target(x) = sigmoid(responseSlope * (input(x) - intervention(x) - threshold))
+next(x) = (1 - dt) * u(x) + dt * target(x)
 ```
 
 The lattice wraps at its boundaries. This makes the first proof deterministic and avoids artificial walls while keeping the update rule easy to inspect.
+
+The field formulation is informed by the lateral-inhibition neural-field tradition documented in [`references/README.md`](references/README.md). This implementation is not a direct reproduction: it uses a discrete update, synthetic inputs, and visually inspectable parameters. The centre cell is included as an ordinary kernel sample; it is not given a separate compensating self-feedback weight.
 
 ## Minimum proof
 
@@ -29,6 +32,10 @@ The lattice wraps at its boundaries. This makes the first proof deterministic an
 - Parameters are chosen for an inspectable visual regime, not fitted to biological measurements.
 - Periodic boundaries remove edge effects but do not represent cortical anatomy.
 - The current proof does not establish biological validity or clinical relevance.
+
+## Evidence boundary
+
+The deterministic tests establish properties of this implementation: replay consistency, bounded finite states, tick semantics, and a measurable intervention effect. They do not establish correspondence with neural measurements or biological mechanisms. See [`references/README.md`](references/README.md) for the cited model precedent and explicit claim boundary.
 
 ## Expansion gates
 
