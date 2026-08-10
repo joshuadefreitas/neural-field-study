@@ -3,52 +3,295 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="A deterministic computational neuroscience field study." />
-    <title>Neural Field Study</title>
-    <link rel="stylesheet" href="styles.css" />
+    <meta
+      name="description"
+      content="A plain-language, interactive study of how nearby excitation and wider inhibition create spatial patterns in a deterministic synthetic field."
+    />
+    <meta name="author" content="Joshua de Freitas" />
+    <meta name="theme-color" id="theme-color" content="#fafafb" />
+    <link rel="canonical" href="https://joshuadefreitas.github.io/neural-field-study/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Neural Field Study — Joshua de Freitas" />
+    <meta
+      property="og:description"
+      content="What happens when nearby activity helps and activity farther away pushes back?"
+    />
+    <title>Neural Field Study — Joshua de Freitas</title>
+
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("theme");
+          var theme = stored === "light" || stored === "dark"
+            ? stored
+            : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+          document.documentElement.setAttribute("data-theme", theme);
+          document.getElementById("theme-color").setAttribute(
+            "content",
+            theme === "dark" ? "#0c0d0f" : "#fafafb"
+          );
+        } catch (error) {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      })();
+    </script>
+
+    <link rel="preload" href="assets/fonts/newsreader-display-300.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="assets/fonts/newsreader-text-300.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="styles.css?v=2" />
   </head>
   <body>
-    <header class="topbar">
-      <a class="brand" href="#top" aria-label="Neural Field Study home"><span class="brand-mark">NF</span><span>Neural Field Study</span></a>
-      <span class="status"><i></i> deterministic proof / 001</span>
-    </header>
-    <main id="top">
-      <section class="intro shell">
-        <div class="intro-copy">
-          <p class="eyebrow">Computational neuroscience / synthetic system</p>
-          <h1>How does activity <em>travel?</em></h1>
-          <p class="lede">A small, inspectable field study of excitation, inhibition, topology, and propagation.</p>
-          <p class="supporting">The first proof keeps the rules explicit and the trajectory reproducible. No clinical claims, no black box, no borrowed certainty.</p>
-        </div>
-        <aside class="note-panel">
-          <span class="note-label">Study note</span>
-          <p>Local excitation opens a path. Longer-range inhibition decides what survives.</p>
-          <span class="note-foot">AMARI / DOG KERNEL / SEEDED REPLAY</span>
-        </aside>
-      </section>
+    <a class="skip-link" href="#main">Skip to study</a>
 
-      <section class="lab shell" aria-label="Neural field simulation">
-        <div class="lab-header"><div><span class="eyebrow">Live field</span><h2>Propagation study</h2></div><span class="lab-state" id="run-state">PAUSED</span></div>
-        <div class="lab-grid">
-          <div class="canvas-frame"><canvas id="field" width="720" height="480" aria-label="Neural activity field visualization"></canvas><div class="canvas-overlay"><span>PERIODIC LATTICE</span><span id="tick-label">TICK 000</span></div></div>
-          <aside class="controls">
-            <div class="metric"><span>Active mass</span><strong id="mass">0.000</strong></div>
-            <div class="metric"><span>Mean activity</span><strong id="mean">0.000</strong></div>
-            <div class="metric"><span>Peak activity</span><strong id="peak">0.000</strong></div>
-            <p class="sr-only" id="live-status" aria-live="polite"></p>
-            <div class="control-actions"><button id="toggle" type="button" aria-label="Play or pause simulation">▶</button><button id="step" type="button" aria-label="Advance one simulation step">＋</button><button id="reset" type="button" aria-label="Reset simulation">↺</button></div>
-            <button class="intervention" id="intervention" type="button"><span class="indicator"></span> Inhibitory intervention <b>OFF</b></button>
-            <p class="control-note">Click the field to place the intervention. The same seed always returns the same trajectory.</p>
+    <header class="site-header">
+      <div class="shell header-inner">
+        <a class="wordmark" href="https://joshuadefreitas.github.io/">Joshua de Freitas</a>
+        <span class="study-id">Study 01 <i>/</i> Neural field</span>
+        <nav class="study-nav" aria-label="Study navigation">
+          <a href="#idea">Idea</a>
+          <a href="#experiment">Experiment</a>
+          <a href="#finding">Finding</a>
+        </nav>
+        <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Switch colour theme">
+          <span data-theme-label>Dark</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="study-hero" id="top" data-study-layer="orient">
+        <div class="shell hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">Synthetic system · deterministic study</p>
+            <h1>What happens when nearby activity helps—and distant activity pushes back?</h1>
+            <p class="hero-lede">
+              An active cell encourages the cells nearest to it, while the same activity
+              suppresses activity across a wider area. This study lets that one push-and-pull
+              rule run and asks what patterns survive.
+            </p>
+            <p class="hero-supporting">
+              This is not a brain simulation. It is a controlled mathematical toy for seeing
+              how small local rules can create large-scale structure.
+            </p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#experiment">Run the experiment</a>
+              <a class="button" href="https://github.com/joshuadefreitas/neural-field-study" target="_blank" rel="noreferrer">View repository <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+
+          <aside class="study-facts" aria-label="Study facts">
+            <div><span>Question</span><strong>Can local push-and-pull create stable spatial structure?</strong></div>
+            <div><span>System</span><strong>Synthetic 72 × 48 field</strong></div>
+            <div><span>Status</span><strong>Numerically audited</strong></div>
+            <div><span>Claim</span><strong>About this code, not neural tissue</strong></div>
           </aside>
         </div>
       </section>
 
-      <section class="evidence shell">
-        <div><p class="eyebrow">What is proven</p><h2>Small rules.<br /><em>Visible consequences.</em></h2></div>
-        <div class="evidence-list"><p><b>01</b> A fixed lattice and explicit difference-of-Gaussians interaction kernel.</p><p><b>02</b> Seeded replay with bounded, finite state after every update.</p><p><b>03</b> A localized inhibitory intervention that changes the trajectory.</p></div>
+      <section class="study-section section-raised" id="idea">
+        <div class="shell section-grid">
+          <div class="section-rail"><p class="rail-label">01 — The idea</p></div>
+          <div class="section-content">
+            <div class="section-head">
+              <h2>The idea in one minute</h2>
+              <p>
+                The model is easier to understand as a sequence than as an equation. The equation
+                is still here later, for anyone who wants to check the sequence.
+              </p>
+            </div>
+
+            <div class="idea-steps">
+              <article class="idea-step">
+                <span>01</span>
+                <h3>Start with a spark</h3>
+                <p>A small patch of cells begins active. A fixed seed adds the same tiny variation every time.</p>
+              </article>
+              <article class="idea-step">
+                <span>02</span>
+                <h3>Let neighbours help</h3>
+                <p>An active cell encourages nearby cells. Activity can therefore spread instead of simply fading.</p>
+              </article>
+              <article class="idea-step">
+                <span>03</span>
+                <h3>Let distance push back</h3>
+                <p>The same cell suppresses activity across a wider area. The balance decides whether a pattern spreads, settles or disappears.</p>
+              </article>
+            </div>
+
+            <p class="plain-model">
+              The useful question is not whether the picture looks brain-like. It is whether the
+              visible pattern follows from the stated rule—and whether it survives reasonable
+              numerical checks.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="study-section" id="experiment" data-study-layer="explore">
+        <div class="shell section-grid">
+          <div class="section-rail"><p class="rail-label">02 — Experiment</p></div>
+          <div class="section-content">
+            <div class="section-head split-head">
+              <div>
+                <h2>Try the rule yourself</h2>
+                <p>
+                  Press Play to let the field evolve. Add local inhibition, then click the field
+                  to move it. Reset returns to the same starting point.
+                </p>
+              </div>
+              <span class="lab-state" id="run-state">Paused</span>
+            </div>
+
+            <div class="lab" aria-label="Neural field simulation">
+              <div class="canvas-frame">
+                <canvas id="field" width="720" height="480" aria-label="Neural activity field visualization"></canvas>
+                <div class="canvas-overlay" aria-hidden="true">
+                  <span>Wrapping grid</span><span id="tick-label">Tick 000</span>
+                </div>
+              </div>
+
+              <aside class="controls" aria-label="Simulation controls and measurements">
+                <div class="metric">
+                  <span><b>Active mass</b><small>All activity added together</small></span>
+                  <strong id="mass">0.000</strong>
+                </div>
+                <div class="metric">
+                  <span><b>Mean activity</b><small>The average cell</small></span>
+                  <strong id="mean">0.000</strong>
+                </div>
+                <div class="metric">
+                  <span><b>Peak activity</b><small>The most active cell</small></span>
+                  <strong id="peak">0.000</strong>
+                </div>
+                <p class="sr-only" id="live-status" aria-live="polite"></p>
+
+                <div class="control-actions">
+                  <button id="toggle" type="button" aria-label="Play simulation">Play</button>
+                  <button id="step" type="button" aria-label="Advance one simulation step">Step</button>
+                  <button id="reset" type="button" aria-label="Reset simulation">Reset</button>
+                </div>
+
+                <button class="intervention" id="intervention" type="button">
+                  <span class="indicator" aria-hidden="true"></span>
+                  Add local inhibition
+                  <b>Off</b>
+                </button>
+                <p class="control-note">
+                  The same seed always returns the same starting field. A changed path therefore
+                  comes from the intervention, not a lucky rerun.
+                </p>
+              </aside>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="study-section section-raised" id="finding">
+        <div class="shell section-grid">
+          <div class="section-rail"><p class="rail-label">03 — Finding</p></div>
+          <div class="section-content">
+            <div class="section-head">
+              <h2>What the audit found</h2>
+              <p class="finding-lede">The label agreed; the picture did not.</p>
+            </div>
+
+            <div class="finding-grid">
+              <div class="finding-copy">
+                <p>
+                  The study tested four ways of treating the grid’s edges. In one version, activity
+                  leaving the right edge returns on the left. In the others, the edges stop or repeat
+                  what reaches them.
+                </p>
+                <p>
+                  Across nine parameter settings, all four versions received the same broad regime
+                  label. But the exact cell-by-cell patterns differed substantially—even well inside
+                  the grid. A tidy summary had hidden a real numerical sensitivity.
+                </p>
+                <p>
+                  That is the useful result: before interpreting a beautiful pattern, check whether
+                  it belongs to the rule or to a convenient choice at the boundary.
+                </p>
+              </div>
+
+              <aside class="limit-panel" aria-labelledby="limits-title">
+                <p class="rail-label">Claim boundary</p>
+                <h3 id="limits-title">What this does not show</h3>
+                <ul>
+                  <li>No neural recordings were used.</li>
+                  <li>The parameters were chosen for inspection, not fitted to a brain.</li>
+                  <li>The result says nothing clinical and makes no claim about real neural tissue.</li>
+                </ul>
+              </aside>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="study-section technical-section" id="record" data-study-layer="inspect">
+        <div class="shell section-grid">
+          <div class="section-rail"><p class="rail-label">04 — Record</p></div>
+          <div class="section-content">
+            <div class="section-head">
+              <h2>For the technically curious</h2>
+              <p>The machinery is available without making it the price of entry.</p>
+            </div>
+
+            <details class="technical-record">
+              <summary>
+                <span><b>Model, parameters and reproducible commands</b><small>Open the inspect layer</small></span>
+                <i aria-hidden="true"></i>
+              </summary>
+              <div class="technical-body">
+                <div>
+                  <h3>The update</h3>
+                  <p>
+                    The field uses a normalized difference-of-Gaussians kernel: a narrow positive
+                    lobe for excitation and a wider negative lobe for inhibition. A sigmoid maps
+                    their combined input back into a bounded activity value.
+                  </p>
+                  <pre><code>input  = nearby excitation − wider inhibition − intervention
+target = sigmoid(responseSlope × (input − threshold))
+next   = (1 − dt) × current + dt × target</code></pre>
+                </div>
+                <div>
+                  <h3>Baseline</h3>
+                  <dl class="parameter-list">
+                    <div><dt>Grid</dt><dd>72 × 48 cells</dd></div>
+                    <div><dt>Seed</dt><dd>17</dd></div>
+                    <div><dt>Boundary</dt><dd>Torus / wrapping</dd></div>
+                    <div><dt>State</dt><dd>Bounded to [0, 1] by the update</dd></div>
+                  </dl>
+                </div>
+                <div>
+                  <h3>Run the record</h3>
+                  <pre><code>npm test
+npm run audit
+npm run sweep
+npm run boundary-audit</code></pre>
+                </div>
+              </div>
+            </details>
+
+            <div class="record-links">
+              <a href="docs/numerical-foundations.md">Numerical foundations <span aria-hidden="true">→</span></a>
+              <a href="docs/numerical-audit-results.md">Audit results <span aria-hidden="true">→</span></a>
+              <a href="docs/regime-sweep-results.md">Regime sweep <span aria-hidden="true">→</span></a>
+              <a href="docs/references/README.md">References and claim boundary <span aria-hidden="true">→</span></a>
+            </div>
+          </div>
+        </div>
       </section>
     </main>
-    <footer class="footer shell"><span>Neural Field Study / 001</span><a href="https://github.com/joshuadefreitas" target="_blank" rel="noreferrer">Joshua de Freitas ↗</a></footer>
+
+    <footer class="site-footer">
+      <div class="shell footer-inner">
+        <span>Neural Field Study · 01</span>
+        <a href="https://joshuadefreitas.github.io/">Back to portfolio <span aria-hidden="true">↗</span></a>
+        <span>© <span id="year"></span> Joshua de Freitas</span>
+      </div>
+    </footer>
+
     <script type="module" src="src/app.js"></script>
   </body>
 </html>
