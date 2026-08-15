@@ -14,6 +14,7 @@ This is a compact documentation set for a synthetic, executable rate-field study
 | [Numerical foundations](numerical-foundations.md) | Plain-language explanation, equation, and audit protocol. |
 | [Audit results](numerical-audit-results.md) | Current reproducible numerical baseline. |
 | [Regime sweep](regime-sweep-results.md) | First predeclared parameter sweep. |
+| [M2 perturbation and recovery brief](M2-PERTURBATION-RECOVERY-BRIEF.md) | Proposed next protocol; no result is claimed. |
 | [Study page template](STUDY-PAGE-TEMPLATE.md) | Reusable Orient → Explore → Inspect public-study structure. |
 | [Decision 0001](decisions/0001-synthetic-evidence-before-biological-claims.md) | Durable evidence boundary. |
 | [Decision 0002](decisions/0002-shared-study-page-system.md) | Question-first shared study-page system. |
